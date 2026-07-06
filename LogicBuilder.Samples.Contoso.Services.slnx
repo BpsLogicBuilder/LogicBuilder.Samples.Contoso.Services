@@ -1,0 +1,18 @@
+<Solution>
+  <Folder Name="/BSL/">
+    <Project Path="Contoso.BSL.AutoMapperProfiles/Contoso.BSL.AutoMapperProfiles.csproj" Id="66a2d650-6389-4edb-bc3a-f0cb3d7ce68c" />
+    <Project Path="Contoso.Bsl.Flow/Contoso.Bsl.Flow.csproj" Id="22f373b7-a9b6-4e1b-be20-ab7562b66327" />
+  </Folder>
+  <Folder Name="/Business/">
+    <Project Path="Contoso.Domain/Contoso.Domain.csproj" />
+    <Project Path="Contoso.Repositories/Contoso.Repositories.csproj" Id="0badba62-84f2-4e08-bb59-52cf2d755dcc" />
+  </Folder>
+  <Folder Name="/EF/">
+    <Project Path="Contoso.Contexts/Contoso.Contexts.csproj" />
+    <Project Path="Contoso.Data/Contoso.Data.csproj" />
+    <Project Path="Contoso.Stores/Contoso.Stores.csproj" />
+  </Folder>
+  <Folder Name="/Tests/">
+    <Project Path="Contoso.Bsl.Flow.Tests/Contoso.Bsl.Flow.Tests.csproj" Id="9a1e9113-71d3-47b5-bd1b-964099979097" />
+  </Folder>
+</Solution>
