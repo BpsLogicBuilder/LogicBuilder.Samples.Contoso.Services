@@ -54,7 +54,7 @@ namespace Contoso.Bsl.Flow.Rules
                 => Path.GetExtension(Path.GetFileNameWithoutExtension(fullResourceName))[1..];
             //Gets the full name first: Contoso.Bsl.Flow.Rulesets.savecourse.module
             //Then GetFileNameWithoutExtension returns: Contoso.Bsl.Flow.Rulesets.savecourse
-            //Finally the range operator returns: savecourse
+            //Finally Path.GetExtension and the range operator return: savecourse
         }
 
         private static string[] GetResourceNames(Assembly assembly)

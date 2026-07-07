@@ -1,0 +1,6 @@
+@Contoso.Bsl_HostAddress = http://localhost:5258
+
+GET {{Contoso.Bsl_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
