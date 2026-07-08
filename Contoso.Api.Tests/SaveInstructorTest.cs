@@ -10,7 +10,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Text.Json;
 
-namespace Contoso.Bsl.Tests
+namespace Contoso.Api.Tests
 {
     public class SaveInstructorTest
     {

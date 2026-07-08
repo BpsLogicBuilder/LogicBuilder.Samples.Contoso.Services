@@ -1,4 +1,4 @@
-﻿namespace Contoso.Bsl.Tests
+﻿namespace Contoso.Api
 {
     public class UrlOptions
     {

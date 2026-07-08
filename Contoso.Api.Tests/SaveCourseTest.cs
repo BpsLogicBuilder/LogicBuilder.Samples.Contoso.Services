@@ -9,7 +9,7 @@ using Microsoft.Extensions.Options;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 
-namespace Contoso.Bsl.Tests
+namespace Contoso.Api.Tests
 {
     public class SaveCourseTest
     {

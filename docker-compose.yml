@@ -1,0 +1,15 @@
+services:
+  contoso.api:
+    image: ${DOCKER_REGISTRY-}contosoapi
+    build:
+      context: .
+      dockerfile: Contoso.Api/Dockerfile
+    depends_on:
+      - contoso.bsl
+
+  contoso.bsl:
+    image: ${DOCKER_REGISTRY-}contosobsl
+    build:
+      context: .
+      dockerfile: Contoso.Bsl/Dockerfile
+

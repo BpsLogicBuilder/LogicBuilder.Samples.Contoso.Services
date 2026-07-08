@@ -3,7 +3,7 @@ using LogicBuilder.Domain.Json;
 using LogicBuilder.Expressions.Utils.Json;
 using System.Text.Json;
 
-namespace Contoso.Bsl.Tests
+namespace Contoso.Api
 {
     public static class SerializationOptions
     {
