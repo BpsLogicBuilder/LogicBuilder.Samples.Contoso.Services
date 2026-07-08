@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Contoso.Bsl.Flow.Rules
 {
-    internal class RulesLoader(IRulesSerializer rulesSerializer) : IRulesLoader
+    public class RulesLoader(IRulesSerializer rulesSerializer) : IRulesLoader
     {
         private readonly IRulesSerializer _rulesSerializer = rulesSerializer;
 

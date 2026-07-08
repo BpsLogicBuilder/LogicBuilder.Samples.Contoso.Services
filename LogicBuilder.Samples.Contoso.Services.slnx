@@ -1,7 +1,11 @@
 <Solution>
+  <Folder Name="/API/">
+    <Project Path="Contoso.Api/Contoso.Api.csproj" Id="9df41464-39a4-40d0-9ebf-4de23a93826d" />
+  </Folder>
   <Folder Name="/BSL/">
     <Project Path="Contoso.BSL.AutoMapperProfiles/Contoso.BSL.AutoMapperProfiles.csproj" Id="66a2d650-6389-4edb-bc3a-f0cb3d7ce68c" />
     <Project Path="Contoso.Bsl.Flow/Contoso.Bsl.Flow.csproj" Id="22f373b7-a9b6-4e1b-be20-ab7562b66327" />
+    <Project Path="Contoso.Bsl/Contoso.Bsl.csproj" Id="abba4077-6833-4b47-8fff-45842fe84751" />
   </Folder>
   <Folder Name="/Business/">
     <Project Path="Contoso.Domain/Contoso.Domain.csproj" />
@@ -12,7 +16,17 @@
     <Project Path="Contoso.Data/Contoso.Data.csproj" />
     <Project Path="Contoso.Stores/Contoso.Stores.csproj" />
   </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path=".github/workflows/check-for-ab-number.yml" />
+    <File Path=".github/workflows/ci.yml" />
+    <File Path="CHANGELOG.md" />
+    <File Path="README.md" />
+  </Folder>
   <Folder Name="/Tests/">
+    <Project Path="Contoso.Api.Tests/Contoso.Api.Tests.csproj" Id="bb967bcd-095f-4e5b-9603-6068c91c659e" />
     <Project Path="Contoso.Bsl.Flow.Tests/Contoso.Bsl.Flow.Tests.csproj" Id="9a1e9113-71d3-47b5-bd1b-964099979097" />
   </Folder>
+  <Project Path="docker-compose.dcproj">
+    <Build />
+  </Project>
 </Solution>

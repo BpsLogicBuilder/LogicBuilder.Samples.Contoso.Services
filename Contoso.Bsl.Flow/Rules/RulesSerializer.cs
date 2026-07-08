@@ -10,7 +10,7 @@ using System.Xml;
 
 namespace Contoso.Bsl.Flow.Rules
 {
-    internal class RulesSerializer : IRulesSerializer
+    public class RulesSerializer : IRulesSerializer
     {
         public RuleSet? DeserializeRuleSet(string ruleSetXmlDefinition)
         {
@@ -40,7 +40,9 @@ namespace Contoso.Bsl.Flow.Rules
                 typeof(LogicBuilder.App.Utils.Interfaces.ITypeHelper).Assembly,
                 typeof(LogicBuilder.Forms.Parameters.Expansions.SelectExpandDefinitionParameters).Assembly,
                 typeof(Domain.Entities.StudentModel).Assembly,
-                typeof(LogicBuilder.RulesDirector.DirectorBase).Assembly
+                typeof(Data.Entities.Course).Assembly,
+                typeof(LogicBuilder.RulesDirector.DirectorBase).Assembly,
+                typeof(string).Assembly
             ];
 
             RuleValidation ruleValidation = new(typeof(FlowActivity), assemblies);

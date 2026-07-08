@@ -2,7 +2,7 @@
 
 namespace Contoso.Bsl.Flow.Rules.Interfaces
 {
-    internal interface IRulesSerializer
+    public interface IRulesSerializer
     {
         RuleSet? DeserializeRuleSet(string ruleSetXmlDefinition);
         RuleSet? DeserializeRuleSetFile(RulesModule module);

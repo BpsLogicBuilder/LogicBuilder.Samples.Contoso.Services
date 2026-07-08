@@ -2,6 +2,8 @@
 using Contoso.Bsl.Flow.Interfaces;
 using Contoso.Repositories;
 using Contoso.Stores;
+using LogicBuilder.App.Bsl.Utils;
+using LogicBuilder.App.Bsl.Utils.Interfaces;
 using LogicBuilder.EntityFrameworkCore.Repositories;
 using LogicBuilder.RulesDirector;
 
@@ -19,6 +21,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 .AddBslUtilsServices()
                 .AddRulesCacheService()
                 .AddAppCommonUtilsServices()
+                .AddTransient<IRequestHelper, RequestHelper>()//add this to BslUtilsService registrations
                 .AddTransient<ISchoolStore, SchoolStore>()
                 .AddTransient<IContextRepository, SchoolRepository>()
                 .AddTransient<ISchoolRepository, SchoolRepository>()
