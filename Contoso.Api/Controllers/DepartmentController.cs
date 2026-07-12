@@ -1,6 +1,6 @@
 ﻿using LogicBuilder.App.Bsl.Business.Requests;
 using LogicBuilder.App.Bsl.Business.Responses;
-using LogicBuilder.App.Web.Utils.Interfaces;
+using LogicBuilder.App.Utils.Web.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System.Text.Json;

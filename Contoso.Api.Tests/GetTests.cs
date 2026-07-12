@@ -277,12 +277,12 @@ namespace Contoso.Api.Tests
                             "q"
                         ),
                         SelectExpandDefinition = new SelectExpandDefinitionDescriptor
-                        {
-                            ExpandedItems =
+                        (
+                            [],
                             [
                                 new SelectExpandItemDescriptor("Courses")
                             ]
-                        },
+                        ),
                         ModelType = typeof(DepartmentModel).AssemblyQualifiedName,
                         DataType = typeof(Department).AssemblyQualifiedName
                     }
@@ -314,12 +314,12 @@ namespace Contoso.Api.Tests
                             "q"
                         ),
                         SelectExpandDefinition = new SelectExpandDefinitionDescriptor
-                        {
-                            ExpandedItems =
+                        (
+                            [],
                             [
                                 new SelectExpandItemDescriptor("Courses")
                             ]
-                        },
+                        ),
                         ModelType = typeof(DepartmentModel).AssemblyQualifiedName,
                         DataType = typeof(Department).AssemblyQualifiedName
                     }

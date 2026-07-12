@@ -20,8 +20,6 @@ namespace Microsoft.Extensions.DependencyInjection
                 .AddFlowFactories()
                 .AddBslUtilsServices()
                 .AddRulesCacheService()
-                .AddAppCommonUtilsServices()
-                .AddTransient<IRequestHelper, RequestHelper>()//add this to BslUtilsService registrations
                 .AddTransient<ISchoolStore, SchoolStore>()
                 .AddTransient<IContextRepository, SchoolRepository>()
                 .AddTransient<ISchoolRepository, SchoolRepository>()

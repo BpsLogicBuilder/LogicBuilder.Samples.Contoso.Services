@@ -1,9 +1,4 @@
 using Contoso.Api;
-using LogicBuilder.App.Utils.Json;
-using LogicBuilder.App.Web.Utils;
-using LogicBuilder.App.Web.Utils.Interfaces;
-using LogicBuilder.Domain.Json;
-using LogicBuilder.Expressions.Utils.Json;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -22,7 +17,7 @@ builder.Services.AddControllers().AddJsonOptions
 );
 
 builder.Services.AddHttpClient();
-builder.Services.AddTransient<IHttpClientHelper, HttpClientHelper>();
+builder.Services.AddAppUtilsHttpClientHelper();
 builder.Services.Configure<UrlOptions>(builder.Configuration);
 
 var app = builder.Build();
