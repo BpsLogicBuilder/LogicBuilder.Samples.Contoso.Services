@@ -2,8 +2,7 @@
 using Contoso.Bsl.Flow.Interfaces;
 using Contoso.Repositories;
 using Contoso.Stores;
-using LogicBuilder.App.Bsl.Utils;
-using LogicBuilder.App.Bsl.Utils.Interfaces;
+using LogicBuilder.App.Utils.Rules;
 using LogicBuilder.EntityFrameworkCore.Repositories;
 using LogicBuilder.RulesDirector;
 
@@ -19,7 +18,22 @@ namespace Microsoft.Extensions.DependencyInjection
                 .AddAppUtilsServices()
                 .AddFlowFactories()
                 .AddBslUtilsServices()
-                .AddRulesCacheService()
+                .AddRulesCacheService
+                (
+                    new RulesLoaderRequest
+                    (
+                        "Contoso.Bsl.Flow.Rulesets",
+                        typeof(FlowActivity),
+                        [
+                            typeof(LogicBuilder.App.Utils.Interfaces.ITypeHelper).Assembly,
+                            typeof(LogicBuilder.Forms.Parameters.Expansions.SelectExpandDefinitionParameters).Assembly,
+                            typeof(Contoso.Domain.Entities.StudentModel).Assembly,
+                            typeof(Contoso.Data.Entities.Course).Assembly,
+                            typeof(DirectorBase).Assembly,
+                            typeof(string).Assembly
+                        ]
+                    )
+                )
                 .AddTransient<ISchoolStore, SchoolStore>()
                 .AddTransient<IContextRepository, SchoolRepository>()
                 .AddTransient<ISchoolRepository, SchoolRepository>()

@@ -1,8 +1,6 @@
 ﻿#pragma warning disable IDE0130 //Microsoft recommended namespace for service registrations
 using AutoMapper;
 using AutoMapper.Extensions.ExpressionMapping;
-using Contoso.Bsl.Flow.Rules;
-using Contoso.Bsl.Flow.Rules.Interfaces;
 using Contoso.BSL.AutoMapperProfiles;
 using Contoso.Contexts;
 using LogicBuilder.EntityFrameworkCore.Mapping;
@@ -43,13 +41,6 @@ namespace Microsoft.Extensions.DependencyInjection
                 ),
                 ServiceLifetime.Transient
             );
-        }
-
-        public static IServiceCollection AddDynamicRulesLoaderConfiguration(this IServiceCollection services)
-        {
-            return services
-                .AddTransient<IRulesLoader, RulesLoader>()
-                .AddTransient<IRulesSerializer, RulesSerializer>();
         }
     }
 }

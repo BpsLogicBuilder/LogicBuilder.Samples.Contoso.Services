@@ -1,3 +1,4 @@
+* 2026-07-13 - AB#190: Using shared library for rules cache registration and rules loading.
 * 2026-07-12 - AB#189: Consolidating App Util libraries.
 * 2026-07-08 - AB#173: Sonar recommendations for Dockerfile.
 * 2026-07-08 - AB#173: Updating Dockerfiles to run as nonroot.
