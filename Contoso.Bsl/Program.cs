@@ -20,8 +20,7 @@ builder.Services
     .AddSqlServerDatabaseConfiguration(builder.Configuration.GetConnectionString("DefaultConnection")!)
     .AddLogging()
     .AddContosoBslFlowServices()
-    .AddAutoMapperConfiguration()
-    .AddDynamicRulesLoaderConfiguration();
+    .AddAutoMapperConfiguration();
 
 var app = builder.Build();
 

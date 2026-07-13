@@ -1,5 +1,6 @@
-﻿using Contoso.Bsl.Flow.Rules;
-using Contoso.Bsl.Flow.Rules.Interfaces;
+﻿using Contoso.Bsl.Flow;
+using LogicBuilder.App.Utils.Rules;
+using LogicBuilder.App.Utils.Rules.Interfaces;
 using LogicBuilder.DataContracts;
 using LogicBuilder.RulesDirector;
 using Microsoft.AspNetCore.Mvc;
@@ -33,7 +34,20 @@ namespace Contoso.Bsl.Controllers
                         moduleData.ResourcesStream,
                         moduleData.RulesStream
                     ),
-                    _rulesCache
+                    _rulesCache,
+                    new RulesLoaderRequest
+                    (
+                        "Contoso.Bsl.Flow.Rulesets",
+                        typeof(FlowActivity),
+                        [
+                            typeof(LogicBuilder.App.Utils.Interfaces.ITypeHelper).Assembly,
+                            typeof(LogicBuilder.Forms.Parameters.Expansions.SelectExpandDefinitionParameters).Assembly,
+                            typeof(Domain.Entities.StudentModel).Assembly,
+                            typeof(Data.Entities.Course).Assembly,
+                            typeof(DirectorBase).Assembly,
+                            typeof(string).Assembly
+                        ]
+                    )
                 );
 
                 return NoContent();
