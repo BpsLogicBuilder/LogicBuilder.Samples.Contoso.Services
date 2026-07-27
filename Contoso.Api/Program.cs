@@ -6,6 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+builder.Services.AddCors();
 builder.Services.AddControllers().AddJsonOptions
 (
     options =>
@@ -23,6 +24,8 @@ builder.Services.Configure<UrlOptions>(builder.Configuration);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+
+app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
 app.UseAuthorization();
 

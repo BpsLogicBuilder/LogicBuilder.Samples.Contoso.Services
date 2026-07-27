@@ -23,6 +23,7 @@
     <File Path="README.md" />
   </Folder>
   <Folder Name="/Tests/">
+    <Project Path="Contoso.Api.Application.Tests/Contoso.Api.Application.Tests.csproj" Id="6e1889f6-de4b-4ef0-a57e-1132112adc14" />
     <Project Path="Contoso.Api.Tests/Contoso.Api.Tests.csproj" Id="bb967bcd-095f-4e5b-9603-6068c91c659e" />
     <Project Path="Contoso.Bsl.Flow.Tests/Contoso.Bsl.Flow.Tests.csproj" Id="9a1e9113-71d3-47b5-bd1b-964099979097" />
   </Folder>
