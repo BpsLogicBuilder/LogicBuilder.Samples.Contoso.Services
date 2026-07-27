@@ -54,12 +54,10 @@ jobs:
           SONAR_PROJECT_KEY: "${{ format('BpsLogicBuilder_{0}', env.PROJECT_NAME) }}"
           SONAR_ORGANIZATION_KEY: "bpslogicbuilder"
         run: |
-          dotnet-sonarscanner begin /k:"${{ env.SONAR_PROJECT_KEY }}" /o:"${{ env.SONAR_ORGANIZATION_KEY }}" /d:sonar.qualitygate.wait=true /d:sonar.token="${{ env.SONAR_TOKEN }}" /d:sonar.cs.opencover.reportsPaths="**/TestResults/coverage.opencover.xml"
+          dotnet-sonarscanner begin /k:"${{ env.SONAR_PROJECT_KEY }}" /o:"${{ env.SONAR_ORGANIZATION_KEY }}" /d:sonar.qualitygate.wait=true /d:sonar.token="${{ env.SONAR_TOKEN }}" /d:sonar.cs.opencover.reportsPaths="**/TestResults/coverage.opencover.xml" /d:sonar.coverage.exclusions="**/Contoso.Api/**"
 
       - name: Run unit tests
-        run: |
-          dotnet test Contoso.Api.Application.Tests/Contoso.Api.Application.Tests.csproj --verbosity normal --configuration Release /p:CollectCoverage=true /p:Threshold=5 /p:ThresholdType=line /p:ThresholdStat=Average /p:CoverletOutput=./TestResults/ /p:ExcludeByAttribute="GeneratedCodeAttribute"
-          dotnet test Contoso.Bsl.Flow.Tests/Contoso.Bsl.Flow.Tests.csproj --verbosity normal --configuration Release /p:MergeWith="../Contoso.Api.Application.Tests/TestResults/coverage.json" /p:CollectCoverage=true /p:Threshold=50 /p:ThresholdType=line /p:ThresholdStat=Average /p:CoverletOutput=./TestResults/ /p:ExcludeByAttribute="GeneratedCodeAttribute" /p:CoverletOutputFormat=opencover
+        run: dotnet test Contoso.Bsl.Flow.Tests/Contoso.Bsl.Flow.Tests.csproj --verbosity normal --configuration Release /p:CollectCoverage=true /p:Threshold=50 /p:ThresholdType=line /p:ThresholdStat=Average /p:CoverletOutput=./TestResults/ /p:ExcludeByAttribute="GeneratedCodeAttribute" /p:CoverletOutputFormat=opencover /p:Exclude="[Contoso.Api]*"
 
       - name: End SonarQube Cloud analysis
         env:

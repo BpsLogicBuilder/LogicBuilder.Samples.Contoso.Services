@@ -1,3 +1,4 @@
+* 2026-07-27 - AB#175: Add CORS policy.
 * 2026-07-27 - AB#175: Add CORS middleware toAPI.
 * 2026-07-13 - AB#190: Using shared library for rules cache registration and rules loading.
 * 2026-07-12 - AB#189: Consolidating App Util libraries.
