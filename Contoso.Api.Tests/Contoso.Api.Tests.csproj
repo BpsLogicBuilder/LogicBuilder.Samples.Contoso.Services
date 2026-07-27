@@ -16,8 +16,8 @@
     <PackageReference Include="LogicBuilder.App.Utils" Version="1.0.5" />
     <PackageReference Include="LogicBuilder.App.Web.Utils" Version="1.0.1" />
     <PackageReference Include="LogicBuilder.Forms.Parameters" Version="2.1.1" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.9" />
-		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.7.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.10" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.8.1" />
 		<PackageReference Include="xunit.v3" Version="3.2.2" />
 		<PackageReference Include="xunit.runner.visualstudio" Version="3.1.5">
 			<PrivateAssets>all</PrivateAssets>
