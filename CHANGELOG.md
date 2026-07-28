@@ -1,3 +1,4 @@
+* 2026-07-27 - AB#175: AB#175: Add allowed headers to CORS policy.
 * 2026-07-27 - AB#175: NuGet.latest.
 * 2026-07-27 - AB#175: Add CORS policy.
 * 2026-07-27 - AB#175: Add CORS middleware toAPI.
