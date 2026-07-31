@@ -16,6 +16,12 @@
     <Project Path="Contoso.Data/Contoso.Data.csproj" />
     <Project Path="Contoso.Stores/Contoso.Stores.csproj" />
   </Folder>
+  <Folder Name="/Infra/">
+    <File Path="infrastructure/BicepCli_contosoapi.txt" />
+    <File Path="infrastructure/BicepCli_contosobsl.txt" />
+    <File Path="infrastructure/contosoapi.bicep" />
+    <File Path="infrastructure/contosobsl.bicep" />
+  </Folder>
   <Folder Name="/Solution Items/">
     <File Path=".github/workflows/check-for-ab-number.yml" />
     <File Path=".github/workflows/ci.yml" />
