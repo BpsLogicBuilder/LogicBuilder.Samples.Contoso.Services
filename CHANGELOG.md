@@ -1,3 +1,4 @@
+* 2026-07-31 - AB#176: Fix typo in CORS policy Allowed Headers.
 * 2026-07-31 - AB#176: Add Bicep files for API and BSL image updates.
 * 2026-07-27 - AB#175: Add allowed headers to CORS policy.
 * 2026-07-27 - AB#175: NuGet.latest.
