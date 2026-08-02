@@ -1,3 +1,4 @@
+* 2026-08-02 - AB#176: Quote parameter with spaces.
 * 2026-08-02 - AB#176: Add missing parameter for Contoso.Bsl image build.
 * 2026-08-02 - AB#176: Fix BSL Service ingress clientCertificateMode.
 * 2026-08-02 - AB#176: Add YAML for deployment workflow.
