@@ -21,7 +21,6 @@
     <File Path="infrastructure/BicepCli_contosobsl.txt" />
     <File Path="infrastructure/contosoapi.bicep" />
     <File Path="infrastructure/contosobsl.bicep" />
-    <File Path="infrastructure/existing-acr.bicep" />
   </Folder>
   <Folder Name="/Solution Items/">
     <File Path=".github/workflows/cd.yml" />

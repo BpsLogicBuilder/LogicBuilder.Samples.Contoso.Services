@@ -43,11 +43,27 @@ jobs:
           path: ~/.nuget/packages
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
 
+      - name: Install SonarQube Cloud scanner
+        run: dotnet tool install --global dotnet-sonarscanner
+
+      - name: Begin SonarQube Cloud analysis
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_PROJECT_KEY: "${{ format('BpsLogicBuilder_{0}', env.PROJECT_NAME) }}"
+          SONAR_ORGANIZATION_KEY: "bpslogicbuilder"
+        run: |
+          dotnet-sonarscanner begin /k:"${{ env.SONAR_PROJECT_KEY }}" /o:"${{ env.SONAR_ORGANIZATION_KEY }}" /d:sonar.qualitygate.wait=true /d:sonar.token="${{ env.SONAR_TOKEN }}" /d:sonar.cs.opencover.reportsPaths="**/TestResults/coverage.opencover.xml" /d:sonar.coverage.exclusions="**/Contoso.Api/**"
+
       - name: Run unit tests
         run: dotnet test Contoso.Bsl.Flow.Tests/Contoso.Bsl.Flow.Tests.csproj --verbosity normal --configuration Release /p:CollectCoverage=true /p:Threshold=50 /p:ThresholdType=line /p:ThresholdStat=Average /p:CoverletOutput=./TestResults/ /p:ExcludeByAttribute="GeneratedCodeAttribute" /p:CoverletOutputFormat=opencover /p:Exclude="[Contoso.Api]*"
 
+      - name: End SonarQube Cloud analysis
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: dotnet-sonarscanner end /d:sonar.token="${{ env.SONAR_TOKEN }}"
+
   deploy-container-app:
-    name: Deploy Workfow App
+    name: Deploy API Service
     runs-on: ubuntu-latest
     if: github.repository_owner == 'BpsLogicBuilder'
     permissions:
@@ -66,31 +82,21 @@ jobs:
         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
         
     - name: Get Existing ACR Login Server
-      id: get_existing_acr
-      uses: azure/arm-deploy@65ae74fb7aec7c680c88ef456811f353adae4d06
+      id: get_login_server
       env:
         RESOURCE_GROUP: ${{ secrets.AZURE_RG_CONTOSO }}
-      with:
-        subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
-        resourceGroupName: ${{ env.RESOURCE_GROUP}}
-        template: ./infrastructure/existing-acr.bicep
-        failOnStdErr: false
+      run: |
+          ACR_SERVER=$(az acr list --resource-group "${{ env.RESOURCE_GROUP }}" --query "[0].loginServer" -o tsv)
+          echo "login_server=$ACR_SERVER" >> $GITHUB_OUTPUT
 
     - name: Build and Upload Contoso.Api Image
       env:
         IMAGE_TAG: "v1.0.${{ github.run_number }}"
-        ACR_LOGIN_SERVER_NAME: ${{ steps.get_existing_acr.outputs.acrLoginServer }}
+        IMAGE_NAME: "contosoapi"
+        ACR_LOGIN_SERVER_NAME: ${{ steps.get_login_server.outputs.login_server }}
       run: |
         echo "ACR LOGIN SERVER NAME ${{ env.ACR_LOGIN_SERVER_NAME }}"
-        az acr build --registry ${{ env.ACR_LOGIN_SERVER_NAME }} --image contosoapi:${{ env.IMAGE_TAG }} --image contosoapi:latest --file ./Contoso.Api/Dockerfile .
-
-    - name: Build and Upload Contoso.Bsl Image
-      env:
-        IMAGE_TAG: "v1.0.${{ github.run_number }}"
-        ACR_LOGIN_SERVER_NAME: ${{ steps.get_existing_acr.outputs.acrLoginServer }}
-      run: |
-        echo "ACR LOGIN SERVER NAME ${{ env.ACR_LOGIN_SERVER_NAME }}"
-        az acr build --registry ${{ env.ACR_LOGIN_SERVER_NAME }} --image contosobsl:${{ env.IMAGE_TAG }} --image contosobsl:latest --file ./Contoso.Bsl/Dockerfile .
+        az acr build --registry ${{ env.ACR_LOGIN_SERVER_NAME }} --image ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} --image ${{ env.IMAGE_NAME }}:latest --file ./Contoso.Api/Dockerfile .
 
     - name: Update Contoso.Api Container App image source
       uses: azure/arm-deploy@65ae74fb7aec7c680c88ef456811f353adae4d06
@@ -103,6 +109,42 @@ jobs:
         parameters: imageTag=${{ env.IMAGE_TAG }}
         template: ./infrastructure/contosoapi.bicep
         failOnStdErr: false
+
+  deploy-bsl-service:
+    name: Deploy BSL Service
+    runs-on: ubuntu-latest
+    if: github.repository_owner == 'BpsLogicBuilder'
+    permissions:
+      id-token: write
+      contents: read
+    needs: test
+    steps:
+
+    - name: Checkout repository
+      uses: actions/checkout@v6
+
+    - uses: azure/login@a457da9ea143d694b1b9c7c869ebb04ebe844ef5
+      with:
+        client-id: ${{ secrets.ARM_DEPLOYER_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        
+    - name: Get Existing ACR Login Server
+      id: get_login_server
+      env:
+        RESOURCE_GROUP: ${{ secrets.AZURE_RG_CONTOSO }}
+      run: |
+          ACR_SERVER=$(az acr list --resource-group "${{ env.RESOURCE_GROUP }}" --query "[0].loginServer" -o tsv)
+          echo "login_server=$ACR_SERVER" >> $GITHUB_OUTPUT
+
+    - name: Build and Upload Contoso.Bsl Image
+      env:
+        IMAGE_TAG: "v1.0.${{ github.run_number }}"
+        IMAGE_NAME: "contosobsl"
+        ACR_LOGIN_SERVER_NAME: ${{ steps.get_login_server.outputs.login_server }}
+      run: |
+        echo "ACR LOGIN SERVER NAME ${{ env.ACR_LOGIN_SERVER_NAME }}"
+        az acr build --registry ${{ env.ACR_LOGIN_SERVER_NAME }} --image ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} --image ${{ env.IMAGE_NAME }}:latest --file ./Contoso.Bsl/Dockerfile .
 
     - name: Update Contoso.Bsl Container App image source
       uses: azure/arm-deploy@65ae74fb7aec7c680c88ef456811f353adae4d06
