@@ -1,3 +1,4 @@
+* 2026-08-02 - AB#176: Running service deployments in parallel.
 * 2026-08-02 - AB#176: Fix parameter quotes.
 * 2026-08-02 - AB#176: Quote parameter with spaces.
 * 2026-08-02 - AB#176: Add missing parameter for Contoso.Bsl image build.
