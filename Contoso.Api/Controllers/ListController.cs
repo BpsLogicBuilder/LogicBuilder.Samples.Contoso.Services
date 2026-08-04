@@ -21,7 +21,8 @@ namespace Contoso.Api.Controllers
             (
                 $"{urlOptions.BaseBslUrl}api/List/GetList",
                 JsonSerializer.Serialize(request),
-                SerializationOptions.Default
+                SerializationOptions.Default,
+                HttpClientOptions.BslClientName
             );
     }
 }
