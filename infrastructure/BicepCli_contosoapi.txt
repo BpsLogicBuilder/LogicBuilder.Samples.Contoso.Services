@@ -4,4 +4,4 @@ $imageTag="v1.0.3"
 
 az acr build --registry $acrName --image "contosoapi:${imageTag}" --image contosoapi:latest --file ./Contoso.Api/Dockerfile .
 
-az deployment group create --resource-group $rg --template-file infrastructure/contosoapi.bicep --parameters imageTag="$imageTag"
+az deployment group create --resource-group $rg --template-file infrastructure/contosoapi.bicep --parameters imageTag="$imageTag" keyVaultUrl="" bslCertificateName=""

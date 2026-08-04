@@ -1,7 +1,11 @@
+using Azure.Identity;
+using Azure.Security.KeyVault.Certificates;
 using Contoso.Api;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Net.Http;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,7 +35,20 @@ builder.Services.AddControllers().AddJsonOptions
     }
 );
 
-builder.Services.AddHttpClient();
+var certificateClient = new CertificateClient(new Uri(builder.Configuration["keyVaultUrl"]!), new DefaultAzureCredential());
+var certificate = await certificateClient.DownloadCertificateAsync(builder.Configuration["bslCertificateName"]);
+
+builder.Services.AddHttpClient(HttpClientOptions.BslClientName, client =>
+{
+    client.BaseAddress = new Uri(builder.Configuration["baseBslUrl"] ?? throw new InvalidOperationException("baseBslUrl is required"));
+})
+.ConfigurePrimaryHttpMessageHandler(() =>
+{
+    var handler = new HttpClientHandler();
+    handler.ClientCertificates.Add(certificate.Value);
+    return handler;
+});
+
 builder.Services.AddAppUtilsHttpClientHelper();
 builder.Services.Configure<UrlOptions>(builder.Configuration);
 

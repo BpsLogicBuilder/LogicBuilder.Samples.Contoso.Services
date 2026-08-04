@@ -21,7 +21,8 @@ namespace Contoso.Api.Controllers
             (
                 $"{urlOptions.BaseBslUrl}api/Instructor/Delete",
                 JsonSerializer.Serialize(deleteInstructorRequest),
-                SerializationOptions.Default
+                SerializationOptions.Default,
+                HttpClientOptions.BslClientName
             );
 
         [HttpPost("Save")]
@@ -30,7 +31,8 @@ namespace Contoso.Api.Controllers
             (
                 $"{urlOptions.BaseBslUrl}api/Instructor/Save",
                 JsonSerializer.Serialize(saveInstructorRequest),
-                SerializationOptions.Default
+                SerializationOptions.Default,
+                HttpClientOptions.BslClientName
             );
     }
 }

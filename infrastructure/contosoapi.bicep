@@ -46,6 +46,12 @@ param targetPort int = 8080
 @description('The naming prefix for all resources.')
 param imageTag string = 'v1.0.0'
 
+@description('Key Vault URL.')
+param keyVaultUrl string
+
+@description('Required certificate for BSL access.')
+param bslCertificateName string
+
 var uniqueSubString = uniqueString(resourceGroup().id)
 var acrName = '${prefix}acr${uniqueSubString}'
 var appInsightsName = '${prefix}-insights-${uniqueSubString}'
@@ -136,6 +142,14 @@ resource apiService 'Microsoft.App/containerApps@2026-01-01' = {
             {
               name: 'baseBslUrl'
               value: 'https://${bslService.properties.configuration.ingress.fqdn}/'
+            }
+            {
+              name: 'keyVaultUrl'
+              value: keyVaultUrl
+            }
+            {
+              name: 'bslCertificateName'
+              value: bslCertificateName
             }
           ]
         }

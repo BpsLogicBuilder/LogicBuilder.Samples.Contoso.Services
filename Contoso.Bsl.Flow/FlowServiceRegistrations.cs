@@ -16,6 +16,7 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             return services
                 .AddAppUtilsServices()
+                .AddHttpClient()
                 .AddFlowFactories()
                 .AddBslUtilsServices()
                 .AddRulesCacheService

@@ -103,10 +103,12 @@ jobs:
       env:
         IMAGE_TAG: "v1.0.${{ github.run_number }}"
         RESOURCE_GROUP: ${{ secrets.AZURE_RG_CONTOSO }}
+        CONTOSO_BSL_CERTIFICATE_NAME: ${{ secrets.CONTOSO_BSL_CERTIFICATE_NAME }}
+        CONTOSO_KEY_VAULT_URL: ${{ secrets.CONTOSO_KEY_VAULT_URL }}
       with:
         subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
         resourceGroupName: ${{ env.RESOURCE_GROUP}}
-        parameters: imageTag=${{ env.IMAGE_TAG }}
+        parameters: imageTag=${{ env.IMAGE_TAG }} keyVaultUrl="${{ env.CONTOSO_KEY_VAULT_URL }}" bslCertificateName="${{ env.CONTOSO_BSL_CERTIFICATE_NAME }}"
         template: ./infrastructure/contosoapi.bicep
         failOnStdErr: false
 
