@@ -49,6 +49,9 @@ param dbConnectionString string
 @description('The naming prefix for all resources.')
 param imageTag string = 'v1.0.0'
 
+@description('Expected cerificate thumbprint')
+param expectedCerificateThumbprint string
+
 var uniqueSubString = uniqueString(resourceGroup().id)
 var acrName = '${prefix}acr${uniqueSubString}'
 var appInsightsName = '${prefix}-insights-${uniqueSubString}'
@@ -111,6 +114,10 @@ resource bslService 'Microsoft.App/containerApps@2026-01-01' = {
             {
               name: 'ConnectionStrings__DefaultConnection'
               secretRef: 'db-connection-string'
+            }
+            {
+              name: 'ExpectedCerificateThumbprint'
+              value: expectedCerificateThumbprint
             }
           ]
         }

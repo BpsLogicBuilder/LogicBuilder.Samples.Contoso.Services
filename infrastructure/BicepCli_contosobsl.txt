@@ -3,4 +3,4 @@ $acrName="<getAcrNameFromPortal>"
 $imageTag="v1.0.3"
 
 az acr build --registry $acrName --image "contosobsl:${imageTag}" --image contosobsl:latest --file ./Contoso.Bsl/Dockerfile .
-az deployment group create --resource-group $rg --template-file infrastructure/contosobsl.bicep --parameters imageTag="$imageTag" dbConnectionString='<connection string>'
+az deployment group create --resource-group $rg --template-file infrastructure/contosobsl.bicep --parameters imageTag="$imageTag" dbConnectionString='<connection string>' expectedCerificateThumbprint=""

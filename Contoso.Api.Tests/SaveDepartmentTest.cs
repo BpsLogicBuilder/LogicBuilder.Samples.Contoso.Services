@@ -2,8 +2,8 @@
 using Contoso.Domain.Entities;
 using LogicBuilder.App.Bsl.Business.Requests;
 using LogicBuilder.App.Bsl.Business.Responses;
-using LogicBuilder.App.Web.Utils;
-using LogicBuilder.App.Web.Utils.Interfaces;
+using LogicBuilder.App.Utils.Web;
+using LogicBuilder.App.Utils.Web.Interfaces;
 using LogicBuilder.Expressions.Utils.ExpressionDescriptors;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
