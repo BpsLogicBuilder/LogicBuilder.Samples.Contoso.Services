@@ -14,7 +14,6 @@
 		</PackageReference>
     <PackageReference Include="LogicBuilder.App.Bsl.Business" Version="1.0.3" />
     <PackageReference Include="LogicBuilder.App.Utils" Version="1.0.7" />
-    <PackageReference Include="LogicBuilder.App.Web.Utils" Version="1.0.1" />
     <PackageReference Include="LogicBuilder.Forms.Parameters" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.10" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.8.1" />
