@@ -22,7 +22,12 @@
     <File Path="infrastructure/contosoapi.bicep" />
     <File Path="infrastructure/contosobsl.bicep" />
   </Folder>
+  <Folder Name="/Infra/aks/">
+    <File Path="infrastructure/aks/api-deployment.yaml" />
+    <File Path="infrastructure/aks/bsl-deployment.yaml" />
+  </Folder>
   <Folder Name="/Solution Items/">
+    <File Path=".github/workflows/cd-aks.yml" />
     <File Path=".github/workflows/cd.yml" />
     <File Path=".github/workflows/check-for-ab-number.yml" />
     <File Path=".github/workflows/ci.yml" />

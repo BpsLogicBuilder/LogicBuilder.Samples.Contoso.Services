@@ -1,3 +1,4 @@
+* 2026-08-14 - AB#177: Add AKS deployment workflow.
 * 2026-08-06 - AB#206: Validate certificate in the BSL.
 * 2026-08-04 - AB#206: Add certificate to api-to-bsl request.
 * 2026-08-02 - AB#176: Running service deployments in parallel.
