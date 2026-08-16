@@ -3,6 +3,7 @@ name: CD
 on:
   push:
     branches: [ master ]
+  workflow_dispatch:
 
 env:
   DOTNET_VERSION: "10.0.x"
@@ -81,34 +82,44 @@ jobs:
         tenant-id: ${{ secrets.AZURE_TENANT_ID }}
         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
         
-    - name: Get Existing ACR Login Server
-      id: get_login_server
+    - name: Get Deployment Outputs
+      id: get_deployment_outputs
       env:
         RESOURCE_GROUP: ${{ secrets.AZURE_RG_CONTOSO }}
       run: |
-          ACR_SERVER=$(az acr list --resource-group "${{ env.RESOURCE_GROUP }}" --query "[0].loginServer" -o tsv)
-          echo "login_server=$ACR_SERVER" >> $GITHUB_OUTPUT
+          ACR_NAME=$(az deployment group show --resource-group ${{ env.RESOURCE_GROUP }} --name main --query properties.outputs.acrName.value -o tsv)
+          echo "::add-mask::$ACR_NAME"
+
+          CONTOSO_KEY_VAULT_NAME=$(az deployment group show --resource-group ${{ env.RESOURCE_GROUP }} --name main --query properties.outputs.keyVaultName.value -o tsv)
+          echo "::add-mask::$CONTOSO_KEY_VAULT_NAME"
+
+          CONTOSO_BSL_CERTIFICATE_NAME=$(az deployment group show --resource-group ${{ env.RESOURCE_GROUP }} --name main --query properties.outputs.contosoBslCertificateName.value -o tsv)
+          echo "::add-mask::$CONTOSO_BSL_CERTIFICATE_NAME"
+
+          echo "acr_name=$ACR_NAME" >> $GITHUB_OUTPUT
+          echo "contoso_key_vault_name=$CONTOSO_KEY_VAULT_NAME" >> $GITHUB_OUTPUT
+          echo "contoso_bsl_certificate_name=$CONTOSO_BSL_CERTIFICATE_NAME" >> $GITHUB_OUTPUT
 
     - name: Build and Upload Contoso.Api Image
       env:
         IMAGE_TAG: "v1.0.${{ github.run_number }}"
         IMAGE_NAME: "contosoapi"
-        ACR_LOGIN_SERVER_NAME: ${{ steps.get_login_server.outputs.login_server }}
+        ACR_NAME: ${{ steps.get_deployment_outputs.outputs.acr_name }}
       run: |
-        echo "ACR LOGIN SERVER NAME ${{ env.ACR_LOGIN_SERVER_NAME }}"
-        az acr build --registry ${{ env.ACR_LOGIN_SERVER_NAME }} --image ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} --image ${{ env.IMAGE_NAME }}:latest --file ./Contoso.Api/Dockerfile .
+        echo "ACR NAME ${{ env.ACR_NAME}}"
+        az acr build --registry ${{ env.ACR_NAME }} --image ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} --image ${{ env.IMAGE_NAME }}:latest --file ./Contoso.Api/Dockerfile .
 
     - name: Update Contoso.Api Container App image source
       uses: azure/arm-deploy@65ae74fb7aec7c680c88ef456811f353adae4d06
       env:
         IMAGE_TAG: "v1.0.${{ github.run_number }}"
         RESOURCE_GROUP: ${{ secrets.AZURE_RG_CONTOSO }}
-        CONTOSO_BSL_CERTIFICATE_NAME: ${{ secrets.CONTOSO_BSL_CERTIFICATE_NAME }}
-        CONTOSO_KEY_VAULT_URL: ${{ secrets.CONTOSO_KEY_VAULT_URL }}
+        CONTOSO_BSL_CERTIFICATE_NAME: ${{ steps.get_deployment_outputs.outputs.contoso_bsl_certificate_name }}
+        CONTOSO_KEY_VAULT_NAME: ${{ steps.get_deployment_outputs.outputs.contoso_key_vault_name }}
       with:
         subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
         resourceGroupName: ${{ env.RESOURCE_GROUP}}
-        parameters: imageTag=${{ env.IMAGE_TAG }} keyVaultUrl="${{ env.CONTOSO_KEY_VAULT_URL }}" bslCertificateName="${{ env.CONTOSO_BSL_CERTIFICATE_NAME }}"
+        parameters: imageTag=${{ env.IMAGE_TAG }} keyVaultUrl="https://${{ env.CONTOSO_KEY_VAULT_NAME}}.vault.azure.net/" bslCertificateName="${{ env.CONTOSO_BSL_CERTIFICATE_NAME }}"
         template: ./infrastructure/contosoapi.bicep
         failOnStdErr: false
 
@@ -131,22 +142,28 @@ jobs:
         tenant-id: ${{ secrets.AZURE_TENANT_ID }}
         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
         
-    - name: Get Existing ACR Login Server
-      id: get_login_server
+    - name: Get Deployment Outputs
+      id: get_deployment_outputs
       env:
         RESOURCE_GROUP: ${{ secrets.AZURE_RG_CONTOSO }}
       run: |
-          ACR_SERVER=$(az acr list --resource-group "${{ env.RESOURCE_GROUP }}" --query "[0].loginServer" -o tsv)
-          echo "login_server=$ACR_SERVER" >> $GITHUB_OUTPUT
+          ACR_NAME=$(az deployment group show --resource-group ${{ env.RESOURCE_GROUP }} --name main --query properties.outputs.acrName.value -o tsv)
+          echo "::add-mask::$ACR_NAME"
+
+          EXPECTED_CERTIFICATE_THUMBPRINT=$(az deployment group show --resource-group ${{ env.RESOURCE_GROUP }} --name main --query properties.outputs.contosoBslCertificateThumbprint.value -o tsv)
+          echo "::add-mask::$EXPECTED_CERTIFICATE_THUMBPRINT"
+
+          echo "acr_name=$ACR_NAME" >> $GITHUB_OUTPUT
+          echo "expected_certificate_thumbprint=$EXPECTED_CERTIFICATE_THUMBPRINT" >> $GITHUB_OUTPUT
 
     - name: Build and Upload Contoso.Bsl Image
       env:
         IMAGE_TAG: "v1.0.${{ github.run_number }}"
         IMAGE_NAME: "contosobsl"
-        ACR_LOGIN_SERVER_NAME: ${{ steps.get_login_server.outputs.login_server }}
+        ACR_NAME: ${{ steps.get_deployment_outputs.outputs.acr_name }}
       run: |
-        echo "ACR LOGIN SERVER NAME ${{ env.ACR_LOGIN_SERVER_NAME }}"
-        az acr build --registry ${{ env.ACR_LOGIN_SERVER_NAME }} --image ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} --image ${{ env.IMAGE_NAME }}:latest --file ./Contoso.Bsl/Dockerfile .
+        echo "ACR NAME ${{ env.ACR_NAME }}"
+        az acr build --registry ${{ env.ACR_NAME }} --image ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} --image ${{ env.IMAGE_NAME }}:latest --file ./Contoso.Bsl/Dockerfile .
 
     - name: Update Contoso.Bsl Container App image source
       uses: azure/arm-deploy@65ae74fb7aec7c680c88ef456811f353adae4d06
@@ -154,9 +171,10 @@ jobs:
         IMAGE_TAG: "v1.0.${{ github.run_number }}"
         RESOURCE_GROUP: ${{ secrets.AZURE_RG_CONTOSO }}
         CONNECTION_STRING: ${{ secrets.CONTOSO_DB_CONNECTION_STRING }}
+        EXPECTED_CERTIFICATE_THUMBPRINT: ${{ steps.get_deployment_outputs.outputs.expected_certificate_thumbprint }}
       with:
         subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
         resourceGroupName: ${{ env.RESOURCE_GROUP}}
-        parameters: imageTag=${{ env.IMAGE_TAG }} dbConnectionString="${{ env.CONNECTION_STRING }}" expectedCerificateThumbprint="${{ vars.CONTOSO_EXPECTED_THUMBPRINT }}"
+        parameters: imageTag=${{ env.IMAGE_TAG }} dbConnectionString="${{ env.CONNECTION_STRING }}" expectedCerificateThumbprint="${{ env.EXPECTED_CERTIFICATE_THUMBPRINT }}"
         template: ./infrastructure/contosobsl.bicep
         failOnStdErr: false

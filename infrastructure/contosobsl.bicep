@@ -55,6 +55,7 @@ param expectedCerificateThumbprint string
 var uniqueSubString = uniqueString(resourceGroup().id)
 var acrName = '${prefix}acr${uniqueSubString}'
 var appInsightsName = '${prefix}-insights-${uniqueSubString}'
+var appConfigurationName = '${prefix}-config-${uniqueSubString}'
 var containerAppEnvName = '${prefix}-cae-${uniqueSubString}'
 
 resource containerAppEnv 'Microsoft.App/managedEnvironments@2022-06-01-preview' existing = {
@@ -67,6 +68,10 @@ resource acr 'Microsoft.ContainerRegistry/registries@2025-11-01' existing = {
 
 resource appInsights 'Microsoft.Insights/components@2020-02-02' existing = {
   name: appInsightsName
+}
+
+resource appConfiguration 'Microsoft.AppConfiguration/configurationStores@2024-05-01' existing = {
+  name: appConfigurationName
 }
 
 resource bslService 'Microsoft.App/containerApps@2026-01-01' = {
@@ -110,6 +115,10 @@ resource bslService 'Microsoft.App/containerApps@2026-01-01' = {
             {
               name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
               value: appInsights.properties.ConnectionString
+            }
+            {
+              name: 'APPLICATION_CONFIGURATION_ENDPOINT'
+              value: appConfiguration.properties.endpoint
             }
             {
               name: 'ConnectionStrings__DefaultConnection'

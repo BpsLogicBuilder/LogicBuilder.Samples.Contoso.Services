@@ -161,7 +161,7 @@ jobs:
           CONTOSO_APP_NAMESPACE=$(az deployment group show --resource-group ${{ env.RESOURCE_GROUP }} --name main --query properties.outputs.kubernetesNamespace.value -o tsv)
           echo "::add-mask::$CONTOSO_APP_NAMESPACE"
 
-          EXPECTED_CERTIFICATE_THUMBPRINT=$(az deployment group show --resource-group ${{ env.RESOURCE_GROUP }} --name main --query properties.outputs.contosoApiServiceAccountName.value -o tsv)
+          EXPECTED_CERTIFICATE_THUMBPRINT=$(az deployment group show --resource-group ${{ env.RESOURCE_GROUP }} --name main --query properties.outputs.contosoBslCertificateThumbprint.value -o tsv)
           echo "::add-mask::$EXPECTED_CERTIFICATE_THUMBPRINT"
 
           echo "acr_name=$ACR_NAME" >> $GITHUB_OUTPUT
