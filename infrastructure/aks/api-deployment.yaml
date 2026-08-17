@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: contoso-api
-  namespace: contoso-apps
+  namespace: CONTOSO_APP_NAMESPACE
   labels:
     app: contoso-api
 spec:
@@ -15,7 +15,7 @@ spec:
       labels:
         app: contoso-api
         azure.workload.identity/use: "true"
-      namespace: contoso-apps
+      namespace: CONTOSO_APP_NAMESPACE
     spec:
       serviceAccountName: CONTOSO_API_SERVICEACCOUNT_NAME
       automountServiceAccountToken: false
@@ -25,6 +25,8 @@ spec:
         ports:
         - containerPort: 8080
         env:
+        - name: APPLICATION_CONFIGURATION_ENDPOINT
+          value: "APP_CONFIG_ENDPOINT"
         - name: baseBslUrl
           value: "http://contoso-bsl:8080/"
         - name: keyVaultUrl

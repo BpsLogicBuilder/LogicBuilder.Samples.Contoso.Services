@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: contoso-bsl
-  namespace: contoso-apps
+  namespace: CONTOSO_APP_NAMESPACE
   labels:
     app: contoso-bsl
 spec:
@@ -16,12 +16,15 @@ spec:
         app: contoso-bsl
     spec:
       automountServiceAccountToken: false
+      serviceAccountName: CONTOSO_BSL_SERVICEACCOUNT_NAME
       containers:
       - name: contoso-bsl
         image: ACR_NAME.azurecr.io/contosobsl:IMAGE_TAG
         ports:
         - containerPort: 8080
         env:
+        - name: APPLICATION_CONFIGURATION_ENDPOINT
+          value: "APP_CONFIG_ENDPOINT"
         - name: ConnectionStrings__DefaultConnection
           valueFrom:
             secretKeyRef:
