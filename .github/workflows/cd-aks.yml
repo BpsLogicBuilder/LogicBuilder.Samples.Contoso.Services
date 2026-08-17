@@ -87,7 +87,7 @@ jobs:
           echo "::add-mask::$ACR_NAME"
 
           APP_CONFIG_ENDPOINT=$(az deployment group show --resource-group ${{ env.RESOURCE_GROUP }} --name main --query properties.outputs.appConfigurationEndPoint.value -o tsv)
-          echo "::add-mask::$AAPP_CONFIG_ENDPOINT"
+          echo "::add-mask::$APP_CONFIG_ENDPOINT"
 
           AKS_CLUSTER_NAME=$(az deployment group show --resource-group ${{ env.RESOURCE_GROUP }} --name main --query properties.outputs.aksClusterName.value -o tsv)
           echo "::add-mask::$AKS_CLUSTER_NAME"
@@ -163,7 +163,7 @@ jobs:
           echo "::add-mask::$ACR_NAME"
 
           APP_CONFIG_ENDPOINT=$(az deployment group show --resource-group ${{ env.RESOURCE_GROUP }} --name main --query properties.outputs.appConfigurationEndPoint.value -o tsv)
-          echo "::add-mask::$AAPP_CONFIG_ENDPOINT"
+          echo "::add-mask::$APP_CONFIG_ENDPOINT"
 
           AKS_CLUSTER_NAME=$(az deployment group show --resource-group ${{ env.RESOURCE_GROUP }} --name main --query properties.outputs.aksClusterName.value -o tsv)
           echo "::add-mask::$AKS_CLUSTER_NAME"

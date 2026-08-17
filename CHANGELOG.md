@@ -1,3 +1,4 @@
+* 2026-08-16 - AB#208: Typo in CD YAML.
 * 2026-08-16 - AB#208: Support App Configuration deployment.
 * 2026-08-16 - AB#208: Add App Configuration to deployment.
 * 2026-08-14 - AB#177: Add AKS deployment workflow.
