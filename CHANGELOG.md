@@ -1,3 +1,7 @@
+* 2026-08-17 - AB#208: Opt in to Microsoft.Testing.Platform.
+* 2026-08-17 - AB#208: Address secutity vulnerability in dependency.
+* 2026-08-16 - AB#208: Typo in CD YAML.
+* 2026-08-16 - AB#208: Support App Configuration deployment.
 * 2026-08-16 - AB#208: Add App Configuration to deployment.
 * 2026-08-14 - AB#177: Add AKS deployment workflow.
 * 2026-08-06 - AB#206: Validate certificate in the BSL.

@@ -86,6 +86,9 @@ jobs:
           ACR_NAME=$(az deployment group show --resource-group ${{ env.RESOURCE_GROUP }} --name main --query properties.outputs.acrName.value -o tsv)
           echo "::add-mask::$ACR_NAME"
 
+          APP_CONFIG_ENDPOINT=$(az deployment group show --resource-group ${{ env.RESOURCE_GROUP }} --name main --query properties.outputs.appConfigurationEndPoint.value -o tsv)
+          echo "::add-mask::$APP_CONFIG_ENDPOINT"
+
           AKS_CLUSTER_NAME=$(az deployment group show --resource-group ${{ env.RESOURCE_GROUP }} --name main --query properties.outputs.aksClusterName.value -o tsv)
           echo "::add-mask::$AKS_CLUSTER_NAME"
 
@@ -96,6 +99,7 @@ jobs:
           echo "::add-mask::$CONTOSO_API_SERVICEACCOUNT_NAME"
 
           echo "acr_name=$ACR_NAME" >> $GITHUB_OUTPUT
+          echo "app_config_endpoint=$APP_CONFIG_ENDPOINT" >> $GITHUB_OUTPUT
           echo "aks_cluster_name=$AKS_CLUSTER_NAME" >> $GITHUB_OUTPUT
           echo "contoso_app_namespace=$CONTOSO_APP_NAMESPACE" >> $GITHUB_OUTPUT
           echo "contoso_api_serviceaccount_name=$CONTOSO_API_SERVICEACCOUNT_NAME" >> $GITHUB_OUTPUT
@@ -119,13 +123,16 @@ jobs:
     - name: Deploy Manifext
       env:
         ACR_NAME: ${{ steps.get_deployment_outpots.outputs.acr_name }}
+        APP_CONFIG_ENDPOINT: ${{ steps.get_deployment_outpots.outputs.app_config_endpoint }}
         IMAGE_TAG: "v1.0.${{ github.run_number }}"
         CONTOSO_APP_NAMESPACE: ${{ steps.get_deployment_outpots.outputs.contoso_app_namespace }}
         CONTOSO_API_SERVICEACCOUNT_NAME: ${{ steps.get_deployment_outpots.outputs.contoso_api_serviceaccount_name }}
       run: |
         sed -e "s|ACR_NAME|${{ env.ACR_NAME }}|g" \
+        -e "s|APP_CONFIG_ENDPOINT|${{ env.APP_CONFIG_ENDPOINT }}|g" \
         -e "s|IMAGE_TAG|${{ env.IMAGE_TAG }}|g" \
         -e "s|CONTOSO_API_SERVICEACCOUNT_NAME|${{ env.CONTOSO_API_SERVICEACCOUNT_NAME }}|g" \
+        -e "s|CONTOSO_APP_NAMESPACE|${{ env.CONTOSO_APP_NAMESPACE }}|g" \
         infrastructure/aks/api-deployment.yaml | kubectl apply -f - -n ${{ env.CONTOSO_APP_NAMESPACE }}
 
   deploy-bsl-service:
@@ -155,6 +162,9 @@ jobs:
           ACR_NAME=$(az deployment group show --resource-group ${{ env.RESOURCE_GROUP }} --name main --query properties.outputs.acrName.value -o tsv)
           echo "::add-mask::$ACR_NAME"
 
+          APP_CONFIG_ENDPOINT=$(az deployment group show --resource-group ${{ env.RESOURCE_GROUP }} --name main --query properties.outputs.appConfigurationEndPoint.value -o tsv)
+          echo "::add-mask::$APP_CONFIG_ENDPOINT"
+
           AKS_CLUSTER_NAME=$(az deployment group show --resource-group ${{ env.RESOURCE_GROUP }} --name main --query properties.outputs.aksClusterName.value -o tsv)
           echo "::add-mask::$AKS_CLUSTER_NAME"
 
@@ -165,6 +175,7 @@ jobs:
           echo "::add-mask::$EXPECTED_CERTIFICATE_THUMBPRINT"
 
           echo "acr_name=$ACR_NAME" >> $GITHUB_OUTPUT
+          echo "app_config_endpoint=$APP_CONFIG_ENDPOINT" >> $GITHUB_OUTPUT
           echo "aks_cluster_name=$AKS_CLUSTER_NAME" >> $GITHUB_OUTPUT
           echo "contoso_app_namespace=$CONTOSO_APP_NAMESPACE" >> $GITHUB_OUTPUT
           echo "expected_certificate_thumbprint=$EXPECTED_CERTIFICATE_THUMBPRINT" >> $GITHUB_OUTPUT
@@ -188,11 +199,16 @@ jobs:
     - name: Deploy Manifext
       env:
         ACR_NAME: ${{ steps.get_deployment_outpots.outputs.acr_name }}
+        APP_CONFIG_ENDPOINT: ${{ steps.get_deployment_outpots.outputs.app_config_endpoint }}
         IMAGE_TAG: "v1.0.${{ github.run_number }}"
+        CONTOSO_BSL_SERVICEACCOUNT_NAME: ${{ steps.get_deployment_outpots.outputs.contoso_bsl_serviceaccount_name }}
         CONTOSO_APP_NAMESPACE: ${{ steps.get_deployment_outpots.outputs.contoso_app_namespace }}
         EXPECTED_CERTIFICATE_THUMBPRINT: ${{ steps.get_deployment_outpots.outputs.expected_certificate_thumbprint }}
       run: |
         sed -e "s|ACR_NAME|${{ env.ACR_NAME }}|g" \
+        -e "s|APP_CONFIG_ENDPOINT|${{ env.APP_CONFIG_ENDPOINT }}|g" \
         -e "s|IMAGE_TAG|${{ env.IMAGE_TAG }}|g" \
         -e "s|EXPECTED_CERTIFICATE_THUMBPRINT|${{ env.EXPECTED_CERTIFICATE_THUMBPRINT }}|g" \
+        -e "s|CONTOSO_BSL_SERVICEACCOUNT_NAME|${{ env.CONTOSO_BSL_SERVICEACCOUNT_NAME }}|g" \
+        -e "s|CONTOSO_APP_NAMESPACE|${{ env.CONTOSO_APP_NAMESPACE }}|g" \
         infrastructure/aks/bsl-deployment.yaml | kubectl apply -f - -n ${{ env.CONTOSO_APP_NAMESPACE }}
