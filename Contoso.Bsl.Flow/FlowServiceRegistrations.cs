@@ -10,6 +10,7 @@ using LogicBuilder.RulesDirector;
 namespace Microsoft.Extensions.DependencyInjection
 #pragma warning restore IDE0130
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public static class FlowServiceRegistrations
     {
         public static IServiceCollection AddContosoBslFlowServices(this IServiceCollection services)

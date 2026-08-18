@@ -8,14 +8,13 @@ using LogicBuilder.EntityFrameworkCore.Mapping;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Contoso.Bsl.Flow.Tests
 {
-    public class TerminateTest : IClassFixture<DatabaseFixture>
+    [Collection("DatabaseCollection")]
+    public class TerminateTest
     {
         static TerminateTest()
         {
@@ -32,7 +31,7 @@ namespace Contoso.Bsl.Flow.Tests
         #region Fields
         private readonly DatabaseFixture databaseFixture;
         private readonly ITestOutputHelper output;
-        private static IServiceProvider? serviceProvider;
+        private IServiceProvider? serviceProvider;
         private static MapperConfiguration MapperConfiguration;
         #endregion Fields
 
@@ -77,7 +76,7 @@ namespace Contoso.Bsl.Flow.Tests
                 (
                     options => options.UseSqlServer
                     (
-                        databaseFixture.GetConnectionString(GetType().Name),
+                        databaseFixture.GetConnectionString($"{GetType().Name}_{Guid.NewGuid():N}"),
                         options => options.EnableRetryOnFailure()
                     ),
                     ServiceLifetime.Transient
