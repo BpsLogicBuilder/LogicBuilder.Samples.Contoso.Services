@@ -5,6 +5,7 @@ using Contoso.Domain.Entities;
 
 namespace Contoso.BSL.AutoMapperProfiles
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class SchoolProfile : Profile
     {
 #pragma warning disable S3776//ternary operation needed for EF provider

@@ -6,6 +6,7 @@ using System.Reflection;
 
 namespace Contoso.Contexts
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class EntityConfigurationHandler(DbContext context)
     {
 
