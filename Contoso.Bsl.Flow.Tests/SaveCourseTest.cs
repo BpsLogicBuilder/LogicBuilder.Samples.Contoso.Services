@@ -18,7 +18,8 @@ using System.Threading.Tasks;
 
 namespace Contoso.Bsl.Flow.Tests
 {
-    public class SaveCourseTest : IClassFixture<DatabaseFixture>
+    [Collection("DatabaseCollection")]
+    public class SaveCourseTest
     {
         static SaveCourseTest()
         {
@@ -36,7 +37,7 @@ namespace Contoso.Bsl.Flow.Tests
         private readonly DatabaseFixture databaseFixture;
         private readonly ITestOutputHelper output;
         private static MapperConfiguration MapperConfiguration;
-        private static IServiceProvider? serviceProvider;
+        private IServiceProvider? serviceProvider;
         #endregion Fields
 
         [Fact]
@@ -116,7 +117,7 @@ namespace Contoso.Bsl.Flow.Tests
                 (
                     options => options.UseSqlServer
                     (
-                        databaseFixture.GetConnectionString(GetType().Name),
+                        databaseFixture.GetConnectionString($"{GetType().Name}_{Guid.NewGuid():N}"),
                         options => options.EnableRetryOnFailure()
                     ),
                     ServiceLifetime.Transient

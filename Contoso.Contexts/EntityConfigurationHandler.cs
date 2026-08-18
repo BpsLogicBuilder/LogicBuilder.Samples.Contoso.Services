@@ -6,6 +6,7 @@ using System.Reflection;
 
 namespace Contoso.Contexts
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class EntityConfigurationHandler(DbContext context)
     {
 
@@ -16,12 +17,12 @@ namespace Contoso.Contexts
         #region Methods
         public virtual void Configure(ModelBuilder modelBuilder)
         {
-            foreach (PropertyInfo property in this.Context.GetType().GetProperties())
+            foreach (Type propertyType in this.Context.GetType()
+                .GetProperties()
+                .Select(property => property.PropertyType)
+                .Where(t => t.Name == "DbSet`1"))
             {
-                if (property.PropertyType.Name != "DbSet`1")
-                    continue;
-
-                Type modelType = property.PropertyType.GetGenericArguments()[0];
+                Type modelType = propertyType.GetGenericArguments()[0];
                 if (!typeof(BaseData).IsAssignableFrom(modelType))
                     continue;
 

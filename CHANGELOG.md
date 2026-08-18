@@ -1,3 +1,5 @@
+* 2026-08-18 - AB#208: Address code coverage.
+* 2026-08-18 - AB#208: Revisiting DatabaseFixture in tests.
 * 2026-08-17 - AB#208: Opt in to Microsoft.Testing.Platform.
 * 2026-08-17 - AB#208: Address secutity vulnerability in dependency.
 * 2026-08-16 - AB#208: Typo in CD YAML.

@@ -17,7 +17,8 @@ using System.Threading.Tasks;
 
 namespace Contoso.Bsl.Flow.Tests
 {
-    public class DeleteCourseTest : IClassFixture<DatabaseFixture>
+    [Collection("DatabaseCollection")]
+    public class DeleteCourseTest
     {
         static DeleteCourseTest()
         {
@@ -35,7 +36,7 @@ namespace Contoso.Bsl.Flow.Tests
         private readonly DatabaseFixture databaseFixture;
         private readonly ITestOutputHelper output;
         private static MapperConfiguration MapperConfiguration;
-        private static IServiceProvider? serviceProvider;
+        private IServiceProvider? serviceProvider;
         #endregion Fields
 
         [Fact]
@@ -110,15 +111,16 @@ namespace Contoso.Bsl.Flow.Tests
             MapperConfiguration.AssertConfigurationIsValid();
         }
 
+
         [MemberNotNull(nameof(serviceProvider))]
         private void Initialize()
         {
-            serviceProvider ??= new ServiceCollection()
+            serviceProvider = new ServiceCollection()
                 .AddDbContext<SchoolContext>
                 (
                     options => options.UseSqlServer
                     (
-                        databaseFixture.GetConnectionString(GetType().Name),
+                        databaseFixture.GetConnectionString($"{GetType().Name}_{Guid.NewGuid():N}"),
                         options => options.EnableRetryOnFailure()
                     ),
                     ServiceLifetime.Transient

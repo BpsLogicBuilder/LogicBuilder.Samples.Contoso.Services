@@ -5,6 +5,7 @@ using Contoso.Domain.Entities;
 
 namespace Contoso.BSL.AutoMapperProfiles
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class SchoolProfile : Profile
     {
 #pragma warning disable S3776//ternary operation needed for EF provider
@@ -16,23 +17,23 @@ namespace Contoso.BSL.AutoMapperProfiles
                 .ForMember(dest => dest.Instructor, opts => opts.Ignore())
                 .ForMember(dest => dest.Course, opts => opts.Ignore())
                 .ReverseMap()
-                .ForMember(dest => dest.CourseTitle, opts => opts.MapFrom(x => x.Course!.Title))
-                .ForMember(dest => dest.CourseNumberAndTitle, opts => opts.MapFrom(x => x.CourseID.ToString() + " " + x.Course!.Title))
-                .ForMember(dest => dest.Department, opts => opts.MapFrom(x => x.Course!.Department!.Name))
+                .ForMember(dest => dest.CourseTitle, opts => opts.MapFrom(x => x.Course.Title))
+                .ForMember(dest => dest.CourseNumberAndTitle, opts => opts.MapFrom(x => x.CourseID.ToString() + " " + x.Course.Title))
+                .ForMember(dest => dest.Department, opts => opts.MapFrom(x => x.Course.Department.Name))
                 .ForAllMembers(o => o.ExplicitExpansion());
 
             CreateMap<CourseModel, Course>()
                 .ForMember(dest => dest.Department, opts => opts.Ignore())
                 .ForMember(dest => dest.Enrollments, opts => opts.Ignore())
                 .ReverseMap()
-                .ForMember(dest => dest.DepartmentName, opts => opts.MapFrom(x => x.Department!.Name))
+                .ForMember(dest => dest.DepartmentName, opts => opts.MapFrom(x => x.Department.Name))
                 .ForMember(dest => dest.CourseIDString, opts => opts.MapFrom(x => x.CourseID.ToString()))
                 .ForAllMembers(o => o.ExplicitExpansion());
 
             CreateMap<DepartmentModel, Department>()
                 .ForMember(dest => dest.Administrator, opts => opts.Ignore())
                 .ReverseMap()
-                .ForMember(dest => dest.AdministratorName, opts => opts.MapFrom(x => x.Administrator!.FirstName + " " + x.Administrator.LastName))
+                .ForMember(dest => dest.AdministratorName, opts => opts.MapFrom(x => x.Administrator.FirstName + " " + x.Administrator.LastName))
                 .ForMember
                 (
                     dest => dest.StartDateString,
@@ -55,8 +56,8 @@ namespace Contoso.BSL.AutoMapperProfiles
                 .ForMember(dest => dest.Student, opts => opts.Ignore())
                 .ForMember(dest => dest.Course, opts => opts.Ignore())
                 .ReverseMap()
-                .ForMember(dest => dest.CourseTitle, opts => opts.MapFrom(x => x.Course!.Title))
-                .ForMember(dest => dest.StudentName, opts => opts.MapFrom(x => x.Student!.FirstName + " " + x.Student.LastName))
+                .ForMember(dest => dest.CourseTitle, opts => opts.MapFrom(x => x.Course.Title))
+                .ForMember(dest => dest.StudentName, opts => opts.MapFrom(x => x.Student.FirstName + " " + x.Student.LastName))
                 .ForMember(dest => dest.Grade, opts => opts.MapFrom(x => x.Grade.HasValue ? (Domain.Entities.Grade?)(int)x.Grade.Value : null))
                 .ForMember
                 (
