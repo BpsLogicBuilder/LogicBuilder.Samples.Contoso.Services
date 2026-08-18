@@ -171,6 +171,9 @@ jobs:
           CONTOSO_APP_NAMESPACE=$(az deployment group show --resource-group ${{ env.RESOURCE_GROUP }} --name main --query properties.outputs.kubernetesNamespace.value -o tsv)
           echo "::add-mask::$CONTOSO_APP_NAMESPACE"
 
+          CONTOSO_BSL_SERVICEACCOUNT_NAME=$(az deployment group show --resource-group ${{ env.RESOURCE_GROUP }} --name main --query properties.outputs.contosoBslServiceAccountName.value -o tsv)
+          echo "contoso_bsl_serviceaccount_name=$CONTOSO_BSL_SERVICEACCOUNT_NAME" >> $GITHUB_OUTPUT
+
           EXPECTED_CERTIFICATE_THUMBPRINT=$(az deployment group show --resource-group ${{ env.RESOURCE_GROUP }} --name main --query properties.outputs.contosoBslCertificateThumbprint.value -o tsv)
           echo "::add-mask::$EXPECTED_CERTIFICATE_THUMBPRINT"
 
