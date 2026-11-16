@@ -1,4 +1,6 @@
 ﻿#pragma warning disable IDE0130 //Microsoft recommended namespace for service registrations
+using Contoso.Bsl;
+using Contoso.Domain.Entities;
 using LogicBuilder.App.Utils.Json;
 using LogicBuilder.Domain.Json;
 using LogicBuilder.Expressions.Utils.Json;
@@ -29,7 +31,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 {
                     options.JsonSerializerOptions.Converters.Add(new DescriptorConverter());
                     options.JsonSerializerOptions.Converters.Add(new ModelConverter());
-                    options.JsonSerializerOptions.Converters.Add(new ObjectConverter());
+                    options.JsonSerializerOptions.Converters.Add(new ObjectConverter(typeof(WeatherForecast).Assembly, typeof(DescriptorConverter).Assembly, typeof(StudentModel).Assembly));
                 }
             );
 

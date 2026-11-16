@@ -1,12 +1,11 @@
-using LogicBuilder.App.Utils.Json;
-using LogicBuilder.Domain.Json;
-using LogicBuilder.Expressions.Utils.Json;
+using Azure.Monitor.OpenTelemetry.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddCertificateAuthorization(builder);
+builder.Services.AddOpenTelemetry().UseAzureMonitor();
 
 builder.Services
     .AddSqlServerDatabaseConfiguration(builder.Configuration.GetConnectionString("DefaultConnection")!)
