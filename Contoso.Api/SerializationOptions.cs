@@ -1,4 +1,5 @@
 ﻿using Contoso.Domain.Entities;
+using LogicBuilder.App.Bsl.Business.Responses;
 using LogicBuilder.App.Utils.Json;
 using LogicBuilder.Domain.Json;
 using LogicBuilder.Expressions.Utils.Json;
@@ -20,7 +21,7 @@ namespace Contoso.Api
 
                 options.Converters.Add(new DescriptorConverter());
                 options.Converters.Add(new ModelConverter());
-                options.Converters.Add(new ObjectConverter(typeof(WeatherForecast).Assembly, typeof(DescriptorConverter).Assembly, typeof(StudentModel).Assembly));
+                options.Converters.Add(new ObjectConverter(typeof(WeatherForecast).Assembly, typeof(DescriptorConverter).Assembly, typeof(StudentModel).Assembly, typeof(GetListResponse).Assembly));
 
                 _default = options;
 
