@@ -1,3 +1,5 @@
+* 2026-11-16 - AB#269: Favor Microsoft coverage of coverlet.
+* 2026-11-16 - AB#269: Turn on Application Insights.
 * 2026-08-18 - AB#208: Add BSL service account to deployment output request.
 * 2026-08-18 - AB#208: Address code coverage.
 * 2026-08-18 - AB#208: Revisiting DatabaseFixture in tests.
